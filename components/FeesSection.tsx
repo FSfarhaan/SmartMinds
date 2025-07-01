@@ -136,6 +136,7 @@ const FeesSection = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("All");
   const [monthFilter, setMonthFilter] = useState<MonthFilter>(monthNames[currentMonthIndex]);
   const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(5);
 
   // Dropdown options: Show all + months up to current
   const monthOptions: MonthFilter[] = [...monthsUpToNow];
@@ -158,6 +159,8 @@ const FeesSection = () => {
     return monthFilteredData;
   }, [activeTab, monthFilteredData]);
 
+  const dataToShow = filteredData.slice(0, visibleCount);
+
   // Pie chart data
   const { totalFees, totalPaid, totalDue, pieData } = useMemo(() => {
     const paid = monthFilteredData.filter((f) => f.status === "Paid").reduce((sum, f) => sum + f.amount, 0);
@@ -179,7 +182,7 @@ const FeesSection = () => {
   return (
     <View className="p-2 w-full">
       {/* Top Card */}
-      <View className="bg-white rounded-2xl p-4 pt-2 shadow-md items-center justify-center mb-6">
+      <View className="bg-white rounded-2xl p-4 pt-2 items-center justify-center mb-6 border-unselected-dark" style={{borderWidth: .2}}> 
         {/* Month Dropdown */}
         <View className="w-full flex-row justify-between items-center">
           <AppTextR className="text-lg font-normal text-unselected-dark">Fees Collection</AppTextR>
@@ -300,7 +303,7 @@ const FeesSection = () => {
 
       {/* Fees Data List */}
       <View>
-        <AppTextSB className="text-xl mb-3 text-unselected-dark">Fees Data</AppTextSB>
+        <AppTextSB className="text-2xl mb-3 text-unselected-dark">Fees Data</AppTextSB>
         <View className="flex-row mb-4" style={{ borderBottomWidth: .2, borderBottomColor: "gray"}}>
           {["All", "Paid", "Pending", "Due"].map((tab) => (
             <TouchableOpacity
@@ -321,11 +324,11 @@ const FeesSection = () => {
         </View>
 
         <FlatList
-          data={filteredData}
+          data={dataToShow}
           keyExtractor={(item) => item.id}
           scrollEnabled={false}
-          renderItem={({ item }) => (
-            <View className="flex-row items-center bg-white rounded-2xl p-4 mb-3 shadow-sm">
+          renderItem={({ item, index }) => (
+            <View className={`flex-row items-center ${index % 2 !== 0 ? "bg-blue-50" : "bg-white"}  rounded-2xl p-4 mb-3 border-unselected-dark`} style={{borderWidth: .2}}>
               <Image
                 source={{ uri: item.avatar }}
                 className="w-10 h-10 rounded-full mr-4"
@@ -342,6 +345,36 @@ const FeesSection = () => {
             </View>
           )}
         />
+        <View className="items-center my-2">
+          {visibleCount < filteredData.length ? (
+            <View className="flex flex-row gap-x-2">
+              <TouchableOpacity
+                className="flex-1 px-4 py-2 bg-transparent rounded-xl border-primary border"
+                onPress={() => setVisibleCount((c) => c + 5)}
+              >
+                <AppTextSB className="text-sm text-center text-blue-700">
+                  Load more
+                </AppTextSB>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                className="flex-1 px-4 py-2 bg-primary rounded-xl"
+                onPress={() => setVisibleCount(filteredData.length)}
+              >
+                <AppTextSB className="text-sm text-center text-white">Show All</AppTextSB>
+              </TouchableOpacity>
+            </View>
+          ) : filteredData.length > 5 ? (
+            <TouchableOpacity
+              className="w-full px-4 py-2 bg-transparent rounded-xl border-redShade-dark border"
+              onPress={() => setVisibleCount(5)}
+            >
+              <AppTextSB className="text-sm text-center text-redShade-dark">
+                Show less
+              </AppTextSB>
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
     </View>
   );

@@ -23,6 +23,7 @@ import TableStudentData from "@/components/TableStudentData";
 import NoticeBlock from "@/components/NoticeBlock";
 import TileMoney from "@/components/TileMoney";
 import FeesSection from "@/components/FeesSection";
+import AttendanceSection from "@/components/AttendanceSection";
 
 const options = [
   { key: "Dashboard", icon: "grid-outline" },
@@ -85,7 +86,7 @@ const DashboardGrid = ({ selected, setSelected }: DashboardGridProps) => {
               <TouchableOpacity
                 onPress={() => setSelected(item.key)}
                 style={{ borderWidth: 0.2 }}
-                className={`py-5 px-6 rounded-3xl mb-1 border-unselected-dark ${isActive ? "bg-blue-100 border border-blue-500" : "bg-white"
+                className={`py-5 px-6 rounded-3xl mb-1 border-unselected-dark ${isActive ? "bg-[#E2EDFD] border border-blue-500" : "bg-white"
                   } shadow-sm`}
               >
                 <Ionicons
@@ -172,18 +173,12 @@ export default function Index() {
         {selected === "Notices" && <NoticeBlock />}
 
         {selected === "Fees" && <View className="px-4 flex flex-row flex-wrap justify-center">
-          {/* <TileMoney item={{
-            title: "Total Fees",
-            content: "₹50,000"
-          }} />
-          <TileMoney item={{
-            title: "Fees Collected",
-            content: "₹30,000"
-          }} /> */}
-
           <FeesSection />
-          
-          </View> }
+        </View> }
+
+        {selected === "Attendance" && <View className="px-4 flex flex-row flex-wrap justify-center">
+          <AttendanceSection />
+        </View> }
 
 
       </ScrollView>

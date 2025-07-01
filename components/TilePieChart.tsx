@@ -19,8 +19,7 @@ type PieTileData = {
 
 const TilePieChart = ({ item }: { item: PieTileData }) => {
   return (
-    <View className="m-2 p-4 rounded-xl bg-white justify-between border-unselected-dark"
-      style={{ borderWidth: .2}}>
+    <View className="m-2 p-4 rounded-xl bg-white justify-between border-[#E1EDFB] border">
       <AppTextR className="w-full text-left text-lg font-normal text-unselected-dark">{item.title}</AppTextR>
       <PieChart
         data={item.pieData}
