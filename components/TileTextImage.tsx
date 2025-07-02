@@ -21,7 +21,8 @@ const TileTextImage = ({ item }: { item: TileData }) => {
 
   return (
     <View
-      className="m-2 p-4 rounded-xl bg-white justify-between flex-1 border-[#E1EDFB] border"
+      className="m-2 p-4 rounded-xl bg-white justify-between flex-1 border-unselected-dark"
+      style={{ borderWidth: .2 }}
     >
       <AppTextR className="text-lg text-unselected-dark">{item.title}</AppTextR>
       <Image

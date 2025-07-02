@@ -11,7 +11,6 @@ import { useAuthStore } from "@/stores/authStore";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import QuickTiles from "@/components/QuickTiles";
 import TileTextImage from "@/components/TileTextImage";
 import TilePieChart from "@/components/TilePieChart";
 import TileBarChart from "@/components/TileBarChart";
@@ -21,7 +20,6 @@ import AppTextR from "@/components/poppins/AppTextR";
 import TileDueFees from "@/components/TileDueFees";
 import TableStudentData from "@/components/TableStudentData";
 import NoticeBlock from "@/components/NoticeBlock";
-import TileMoney from "@/components/TileMoney";
 import FeesSection from "@/components/FeesSection";
 import AttendanceSection from "@/components/AttendanceSection";
 
@@ -37,6 +35,16 @@ interface DashboardGridProps {
   selected: string;
   setSelected: (value: string) => void;
 }
+
+const DueFeeTile = () => (
+  <View className="bg-red-100 border-l-4 border-red-500 rounded-xl px-4 py-3 mb-4 flex-row items-center w-full">
+    <Ionicons name="alert-circle" size={28} color="#dc2626" className="mr-3" />
+    <View className="flex-1">
+      <AppTextSB className="text-red-700 text-lg mb-1">Due fees</AppTextSB>
+      <AppTextR className="text-red-700 text-sm">Ali Asghar has fees due of 5 days. Click to <AppTextSB>see more</AppTextSB></AppTextR>
+    </View>
+  </View>
+);
 
 const DashboardGrid = ({ selected, setSelected }: DashboardGridProps) => {
   return (
@@ -161,9 +169,11 @@ export default function Index() {
             color: "rgba(22, 114, 236, 1)"
           }} />
 
-          <TileDueFees dues={[
+          {/* <TileDueFees dues={[
             { name: "Ali Asghar", dueInDays: 5 }
-          ]} />
+          ]} /> */}
+
+          <DueFeeTile />
         </View>}
 
         {selected === "Students" && <View className="px-4 flex flex-row flex-wrap justify-center">

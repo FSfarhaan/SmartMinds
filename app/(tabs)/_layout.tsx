@@ -27,11 +27,6 @@ const TabIcon = ({
       className="mb-0 h-full"
     >
       <Ionicons name={!focused ? `${icon}-outline` : icon} size={size} color={focused ? "#1672EC" : "#404454"} />
-      {/* {focused && (
-        <Text className="text-primary text-xs mt-1">
-          {title}
-        </Text>
-      )} */}
     </View>
   );
 };
@@ -42,10 +37,11 @@ const _layout = () => {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarItemStyle: {
-        //   height: "100%",
-        //   width: "100%",
+          // height: "100%",
+          width: "100%",
           justifyContent: "center",
           alignItems: "center",
+          
         },
         tabBarStyle: {
           backgroundColor: "#ffffff",
@@ -53,7 +49,7 @@ const _layout = () => {
           borderWidth: .2,
           borderColor: "#7C84A3",
           marginHorizontal: 20,
-          marginBottom: 36,
+          marginBottom: 24,
           height: 70,
           position: "absolute",
           overflow: "hidden",

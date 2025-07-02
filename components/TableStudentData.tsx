@@ -720,7 +720,7 @@ const TableStudentData = () => {
               className="flex-1 px-4 py-2 bg-primary rounded-xl"
               onPress={() => setVisibleCount(sampleStudents.length)}
             >
-              <AppTextSB className="text-sm text-center text-white">Show All</AppTextSB>
+              <AppTextSB className="text-sm text-center text-white border border-primary">Show All</AppTextSB>
             </TouchableOpacity>
           </View>
         ) : filteredStudents.length > 5 ? (
