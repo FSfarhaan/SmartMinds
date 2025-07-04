@@ -1,8 +1,10 @@
-import React, { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-import AppTextSB from './poppins/AppTextSB';
-import AppTextR from './poppins/AppTextR';
+
 import { Ionicons } from '@expo/vector-icons';
+import AppTextSB from '@/components/poppins/AppTextSB';
+import AppTextR from '@/components/poppins/AppTextR';
+import ShowMoreLess from '@/components/ShowMoreLess';
 
 const monthNames = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -105,7 +107,7 @@ const AttendanceSection = () => {
   });
 
   // Ensure attendance for selected month is initialized
-  React.useEffect(() => {
+  useEffect(() => {
     setAttendance((prev) => {
       if (prev[selectedMonthIdx]) return prev;
       const newMonth: Record<string, Record<number, 'P' | 'A' | ''>> = {};
@@ -220,7 +222,7 @@ const AttendanceSection = () => {
   };
 
   return (
-    <View className="w-full p-2">
+    <View className="w-full p-6">
       {/* Top Bar: Shift Tabs & Month Dropdown */}
       <View className="flex-row justify-between items-center mb-2">
         <View className="flex-row items-center">
@@ -298,35 +300,8 @@ const AttendanceSection = () => {
         </ScrollView>
       </View>
       {/* Load more / Show all / Show less */}
-      <View className="items-center my-2">
-        {visibleCount < filteredStudents.length ? (
-          <View className="flex flex-row gap-x-2">
-            <TouchableOpacity
-              className="flex-1 px-4 py-2 bg-transparent rounded-xl border-primary border"
-              onPress={() => setVisibleCount((c) => c + 5)}
-            >
-              <AppTextSB className="text-sm text-center text-blue-700">
-                Load more
-              </AppTextSB>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="flex-1 px-4 py-2 bg-primary rounded-xl"
-              onPress={() => setVisibleCount(filteredStudents.length)}
-            >
-              <AppTextSB className="text-sm text-center text-white">Show All</AppTextSB>
-            </TouchableOpacity>
-          </View>
-        ) : filteredStudents.length > 5 ? (
-          <TouchableOpacity
-            className="w-full px-4 py-2 bg-transparent rounded-xl border-redShade-dark border"
-            onPress={() => setVisibleCount(5)}
-          >
-            <AppTextSB className="text-sm text-center text-redShade-dark">
-              Show less
-            </AppTextSB>
-          </TouchableOpacity>
-        ) : null}
-      </View>
+
+      <ShowMoreLess filteredData={filteredStudents}  sampleData={filteredStudents} setVisibleCount={setVisibleCount} visibleCount={visibleCount}/>
     </View>
   );
 };

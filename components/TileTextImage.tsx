@@ -15,8 +15,6 @@ type TileData = {
   image: ImageSourcePropType;
 };
 
-const screenWidth = Dimensions.get("window").width;
-const tileSize = screenWidth / 2 - 30;
 const TileTextImage = ({ item }: { item: TileData }) => {  
 
   return (

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import AppTextB from "@/components/poppins/AppTextB";
 import AppTextR from "@/components/poppins/AppTextR";
+import { ScrollView } from "react-native-gesture-handler";
 
 const today = new Date();
 const yesterday = new Date(Date.now() - 86400000);
@@ -174,17 +175,20 @@ const Notifications = () => {
     );
   };
 
+  const height = Dimensions.get("window").height / 2;
   return (
-    <SafeAreaView className="flex-1 bg-background p-6">
+    <SafeAreaView className="bg-background p-6 pb-28 flex-1">
       <AppTextR className="text-xl text-unselected-light">
         {today.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}
       </AppTextR>
       <AppTextB className="text-3xl text-unselected-dark mb-4">Notifications</AppTextB>
-      <Section title="Today" data={grouped.today} onPress={handlePress} />
-      <Section title="Yesterday" data={grouped.yesterday} onPress={handlePress} />
-      <Section title="This Week" data={grouped.week} onPress={handlePress} />
-      <Section title="This Month" data={grouped.month} onPress={handlePress} />
-      <Section title="This Year" data={grouped.year} onPress={handlePress} />
+      <ScrollView className="pb-28 overflow-hidden " showsVerticalScrollIndicator={false}>
+        <Section title="Today" data={grouped.today} onPress={handlePress} />
+        <Section title="Yesterday" data={grouped.yesterday} onPress={handlePress} />
+        <Section title="This Week" data={grouped.week} onPress={handlePress} />
+        <Section title="This Month" data={grouped.month} onPress={handlePress} />
+        <Section title="This Year" data={grouped.year} onPress={handlePress} />
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -1,54 +1,17 @@
-import React from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import AppTextR from "./poppins/AppTextR";
-import AppTextSB from "./poppins/AppTextSB";
-import AppTextB from "./poppins/AppTextB";
+import { View } from 'react-native'
+import React from 'react'
+import { Ionicons } from '@expo/vector-icons';
+import AppTextSB from './poppins/AppTextSB';
+import AppTextR from './poppins/AppTextR';
 
-interface DueStudent {
-  name: string;
-  dueInDays: number;
-}
-
-interface TileDueFeesProps {
-  dues: DueStudent[];
-}
-
-const TileDueFees: React.FC<TileDueFeesProps> = ({ dues }) => {
-  return (
-    <View className="mt-2 bg-redShade-light rounded-2xl w-full border-redShade-dark"
-    style={{ borderWidth: .2}}>
-      <View className="flex-row justify-between items-center px-4 pt-3">
-        <AppTextR className="text-base font-semibold text-[#F04438]">Due Fees</AppTextR>
-        <TouchableOpacity>
-          <AppTextSB className="text-sm font-semibold text-[#F04438]">See all</AppTextSB>
-        </TouchableOpacity>
+const TileDueFees = ( { content } : { content: string }) => (
+    <View className="bg-red-100 border-l-4 border-red-500 rounded-xl px-4 py-3 mb-4 flex-row items-center w-full">
+      <Ionicons name="alert-circle" size={28} color="#dc2626" className="mr-3" />
+      <View className="flex-1">
+        <AppTextSB className="text-red-700 text-lg mb-1">Due fees</AppTextSB>
+        <AppTextR className="text-red-700 text-sm">{content}</AppTextR>
       </View>
-      <FlatList 
-        data={dues}
-        keyExtractor={(item, idx) => item.name + idx}
-        scrollEnabled={false}
-        renderItem={({ item }) => (
-          <View
-            className="flex-row items-center rounded-2xl px-4 py-3 mb-2"
-            style={{ minHeight: 56 }}
-          >
-            <Ionicons
-              name="warning"
-              size={28}
-              color="#F04438"
-              style={{ marginRight: 12 }}
-            />
-            <View>
-              <AppTextR className="text-base text-unselected-dark">
-                {item.name} has fees due of <AppTextSB>{item.dueInDays} days</AppTextSB>
-              </AppTextR>
-            </View>
-          </View>
-        )}
-      />
     </View>
   );
-};
 
-export default TileDueFees; 
+export default TileDueFees

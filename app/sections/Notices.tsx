@@ -1,33 +1,14 @@
 import React, { useState } from "react";
 import {
   View,
-  Text,
   FlatList,
   TouchableOpacity,
   LayoutAnimation,
-  UIManager,
-  Platform,
-  Pressable,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AppTextSB from "./poppins/AppTextSB";
-import AppTextR from "./poppins/AppTextR";
-
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
-export interface Notice {
-  id: string;
-  title: string;
-  date: string;
-  subtitle: string;
-  details: string;
-  lastDate?: string;
-}
+import AppTextR from "@/components/poppins/AppTextR";
+import AppTextSB from "@/components/poppins/AppTextSB";
+import { Notice } from "@/types/NoticeTypes";
 
 const sampleNotices: Notice[] = [
   {
@@ -56,10 +37,10 @@ const sampleNotices: Notice[] = [
   },
 ];
 
-function filterNoticesByDate(
+const filterNoticesByDate = (
   notices: Notice[],
   filter: "Show all" | "week" | "month" | "year"
-) {
+) => {
   if (filter === "Show all") return notices;
   const now = new Date();
 
@@ -101,19 +82,23 @@ const NoticeItem = ({
         className={`bg-white rounded-2xl p-4 mb-4 border-unselected-dark ${
           isExpanded ? "bg-gray-50" : ""
         }`}
-        style={{ borderWidth: .2 }}
+        style={{ borderWidth: 0.2 }}
       >
         <View className="flex-row justify-between items-start">
           <AppTextSB className="text-lg text-unselected-dark flex-1">
             {item.title}
           </AppTextSB>
           {isExpanded && (
-            <AppTextR className="text-sm text-unselected-light">{item.date}</AppTextR>
+            <AppTextR className="text-sm text-unselected-light">
+              {item.date}
+            </AppTextR>
           )}
         </View>
         {!isExpanded && (
           <View className="flex-row items-center mt-1">
-            <AppTextR className="text-sm text-unselected-light">{item.date}</AppTextR>
+            <AppTextR className="text-sm text-unselected-light">
+              {item.date}
+            </AppTextR>
             <AppTextR className="text-sm text-gray-500 mx-2">|</AppTextR>
             <AppTextR className="text-sm text-unselected-dark">
               {item.subtitle}
@@ -146,14 +131,13 @@ const NoticeBlock = () => {
     setExpandedId(expandedId === id ? null : id);
   };
 
-  return (
-    <View className="p-6 pt-0 w-full">
-      {/* Header with Filter and Add Button */}
+  const renderHeader = () => {
+    return (
       <View className="flex-row justify-between items-center mb-4">
-        <View style={{ position: "relative", width: '30%' }}>
+        <View style={{ position: "relative", width: "30%" }}>
           <TouchableOpacity
             className="flex-row items-center bg-white py-2 rounded-lg justify-around border-primary"
-            style={{ borderWidth: .2 }}
+            style={{ borderWidth: 0.2 }}
             onPress={() => setNoticeDropdownOpen((open) => !open)}
           >
             <AppTextR className="text-base text-gray-700 mr-2">
@@ -214,9 +198,18 @@ const NoticeBlock = () => {
             color="#ffffff"
             style={{ marginRight: 5 }}
           />
-          <AppTextSB className="text-white text-sm font-semibold">Add Notice</AppTextSB>
+          <AppTextSB className="text-white text-sm font-semibold">
+            Add Notice
+          </AppTextSB>
         </TouchableOpacity>
       </View>
+    );
+  };
+
+  return (
+    <View className="p-6 pt-0 w-full">
+      {/* Header with Filter and Add Button */}
+      {renderHeader()}
 
       <FlatList
         data={filteredNotices}

@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const RemarksSection = () => {
+const StudentPortal = () => {
   return (
     <View>
-      <Text>RemarksSection</Text>
+      <Text>UserPortal</Text>
     </View>
   )
 }
 
-export default RemarksSection
+export default StudentPortal
