@@ -13,6 +13,7 @@ type TileData = {
   title: string;
   content: string;
   image: ImageSourcePropType;
+  flag: boolean
 };
 
 const TileTextImage = ({ item }: { item: TileData }) => {  
@@ -28,7 +29,7 @@ const TileTextImage = ({ item }: { item: TileData }) => {
         className="w-full h-40 rounded-md"
         resizeMode="center"
       />
-      <AppTextSB className="text-unselected-dark">{item.content}</AppTextSB>
+      <AppTextSB className={`text-unselected-dark ${item.flag ? "" : "text-xl"}`}>{item.content}</AppTextSB>
     </View>
   );
 };

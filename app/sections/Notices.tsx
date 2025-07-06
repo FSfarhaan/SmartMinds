@@ -117,7 +117,7 @@ const NoticeItem = ({
   );
 };
 
-const NoticeBlock = () => {
+const Notices = ( { isAdmin} : { isAdmin: boolean }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [noticeFilter, setNoticeFilter] = useState<
     "Show all" | "week" | "month" | "year"
@@ -191,7 +191,8 @@ const NoticeBlock = () => {
             </View>
           )}
         </View>
-        <TouchableOpacity className="bg-primary px-3 py-2 rounded-lg flex-row items-center justify-center">
+
+        {isAdmin && <TouchableOpacity className="bg-primary px-3 py-2 rounded-lg flex-row items-center justify-center">
           <Ionicons
             name={"document-attach"}
             size={12}
@@ -201,7 +202,7 @@ const NoticeBlock = () => {
           <AppTextSB className="text-white text-sm font-semibold">
             Add Notice
           </AppTextSB>
-        </TouchableOpacity>
+        </TouchableOpacity>}
       </View>
     );
   };
@@ -227,4 +228,4 @@ const NoticeBlock = () => {
   );
 };
 
-export default NoticeBlock;
+export default Notices;

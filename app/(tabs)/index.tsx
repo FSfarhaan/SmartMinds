@@ -5,7 +5,7 @@ import StudentPortal from "@/portals/StudentPortal";
 export default function Index() {
   // const { isAdmin, name, logout } = useAuthStore();
 
-  const isAdmin = true;
+  const isAdmin = false;
 
   return ( isAdmin ? <AdminPortal /> : <StudentPortal />)
 }

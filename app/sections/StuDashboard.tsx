@@ -5,43 +5,50 @@ import TilePieChart from "@/components/TilePieChart";
 import TileBarChart from "@/components/TileBarChart";
 import TileDue from "@/components/TileDueFees";
 
-const Dashboard = () => {
-  const dueTile = {
-    title: "Due fees",
-    content: "Ali Asghar has due fees of 5 days",
-    status: "neg"
-  }
+const getStatus = (fees: string) => {
+    if(fees === "Paid") return "✅ Paid";
+    else if (fees === "Pending") return "⚫ Pending";
+    else return "❌ Due"
+}
+
+const StuDashboard = () => {
+    const feesStatus = getStatus("Pending");
+    const dueTile = {
+        title: "Remark",
+        content: "You received a positive remark!",
+        status: "pos"
+    }
+    const dueTile2 = {
+        title: "Remark",
+        content: "You received a negative remark!",
+        status: "neg"
+    }
   return (
     <View className="px-4 flex flex-row flex-wrap justify-center">
       <TileTextImage
         item={{
-          title: "No. of students",
-          content: "Male: 30, Female: 20,\nTotal: 50",
+          title: "Fees Status",
+          content: feesStatus,
           image: require("@/assets/images/personImage.png"),
-          flag: true
+          flag: false
         }}
       />
 
       <View className="p-4 m-2 bg-white border-unselected-dark rounded-xl" style={{ borderWidth: .2 }}>
         <TilePieChart
           item={{
-            title: "Fees paid",
+            title: "Attendance",
             pieData: [
               {
-                name: "Paid: " + 30,
-                value: 30,
+                name: "Present: " + "20 / 30",
+                value: 20,
                 color: "#4CAF50",
               },
               {
-                name: "Pending: " + 10,
+                name: "Absent: " + "10 / 30",
                 value: 10,
                 color: "#404454",
-              },
-              {
-                name: "Due: " + 10,
-                value: 10,
-                color: "#F44336",
-              },
+              }
             ],
             width: Dimensions.get("window").width / 2 - 60,
             height: 150,
@@ -53,20 +60,20 @@ const Dashboard = () => {
 
       <TileBarChart
         item={{
-          title: "Fees collected (2025)",
+          title: "Progress (2025)",
           barData: {
             labels: ["Jan", "Feb", "Mar", "April", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
-            datasets: [{ data: [45000, 30000, 35000, 40000, 50000, 38000, 42000, 47000, 31000, 44000, 39000, 46000]}],
+            datasets: [{ data: [50, 60, 70, 80, 52, 76, 84, 91, 62, 88, 78, 92]}],
           },
           color: "rgba(22, 114, 236, 1)",
         }}
       />
 
-      {dueTile.status === "neg" && <View className="w-full mt-4 px-2">
-        <TileDue title={dueTile.title} content={dueTile.content} status={dueTile.status}/>
-      </View>}
+      <View className="w-full mt-4 px-2">
+        <TileDue title={dueTile.title} status={dueTile.status} content={dueTile.content}/>
+      </View>
     </View>
   );
 };
 
-export default Dashboard;
+export default StuDashboard;

@@ -25,7 +25,7 @@ const AdminPortal = () => {
 
         {selected === "Dashboard" && <Dashboard />}
         {selected === "Students" && <Students />}
-        {selected === "Notices" && <Notices />}
+        {selected === "Notices" && <Notices isAdmin={true} />}
         {selected === "Fees" && <Fees />}
         {selected === "Attendance" && <Attendance />}
 
