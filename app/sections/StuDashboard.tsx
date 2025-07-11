@@ -14,9 +14,9 @@ const getStatus = (fees: string) => {
 const StuDashboard = () => {
     const feesStatus = getStatus("Pending");
     const dueTile = {
-        title: "Remark",
-        content: "You received a positive remark!",
-        status: "pos"
+        title: "Due fees",
+        content: "Your fees is due by 2 days!",
+        status: "neg"
     }
     const dueTile2 = {
         title: "Remark",
@@ -25,6 +25,10 @@ const StuDashboard = () => {
     }
   return (
     <View className="px-4 flex flex-row flex-wrap justify-center">
+      <View className="w-full mt-2 px-2">
+        <TileDue title={dueTile.title} status={dueTile.status} content={dueTile.content}/>
+      </View>
+
       <TileTextImage
         item={{
           title: "Fees Status",
@@ -69,9 +73,7 @@ const StuDashboard = () => {
         }}
       />
 
-      <View className="w-full mt-4 px-2">
-        <TileDue title={dueTile.title} status={dueTile.status} content={dueTile.content}/>
-      </View>
+      
     </View>
   );
 };

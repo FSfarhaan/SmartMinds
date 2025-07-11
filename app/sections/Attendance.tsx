@@ -222,7 +222,7 @@ const AttendanceSection = () => {
   };
 
   return (
-    <View className="w-full p-6">
+    <View className="w-full p-6 pt-2">
       {/* Top Bar: Shift Tabs & Month Dropdown */}
       <View className="flex-row justify-between items-center mb-2">
         <View className="flex-row items-center">

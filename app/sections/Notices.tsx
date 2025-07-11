@@ -208,7 +208,7 @@ const Notices = ( { isAdmin} : { isAdmin: boolean }) => {
   };
 
   return (
-    <View className="p-6 pt-0 w-full">
+    <View className="p-6 pt-2 w-full">
       {/* Header with Filter and Add Button */}
       {renderHeader()}
 

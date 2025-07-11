@@ -13,6 +13,11 @@ const Dashboard = () => {
   }
   return (
     <View className="px-4 flex flex-row flex-wrap justify-center">
+
+      {dueTile.status === "neg" && <View className="w-full mt-2 px-2">
+        <TileDue title={dueTile.title} content={dueTile.content} status={dueTile.status}/>
+      </View>}
+
       <TileTextImage
         item={{
           title: "No. of students",
@@ -62,9 +67,7 @@ const Dashboard = () => {
         }}
       />
 
-      {dueTile.status === "neg" && <View className="w-full mt-4 px-2">
-        <TileDue title={dueTile.title} content={dueTile.content} status={dueTile.status}/>
-      </View>}
+      
     </View>
   );
 };

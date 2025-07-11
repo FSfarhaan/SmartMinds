@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import DashboardHeader from '@/components/DashboardHeader';
 import Notices from '@/app/sections/Notices';
 import StuDashboard from '@/app/sections/StuDashboard';
+import StuFees from '@/app/sections/StuFees';
+import StuAttendance from '@/app/sections/StuAttendance';
 
 
 const options = [
@@ -23,8 +25,8 @@ const StudentPortal = () => {
         {selected === "Dashboard" && <StuDashboard />}
         {/* {selected === "Students" && <Students />} */}
         {selected === "Notices" && <Notices isAdmin={false} />}
-        {/* {selected === "Fees" && <Fees />}
-        {selected === "Attendance" && <Attendance />} */}
+        {selected === "Fees" && <StuFees />}
+        {selected === "Attendance" && <StuAttendance />}
 
       </ScrollView>
     </SafeAreaView>

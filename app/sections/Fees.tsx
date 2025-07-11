@@ -279,7 +279,7 @@ const FeesSection = () => {
   };
 
   return (
-    <View className="p-6 w-full">
+    <View className="p-6 pt-2 w-full">
       <View
         className="bg-white rounded-2xl p-4 pt-2 items-center justify-center mb-6 border-unselected-dark"
         style={{ borderWidth: 0.2 }}
