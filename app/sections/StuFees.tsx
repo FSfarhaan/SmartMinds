@@ -1,8 +1,7 @@
-import { View, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 import React, { useState } from 'react'
-import CircularFees from '@/components/CircularFees'
-import AppTextR from '@/components/poppins/AppTextR'
-import { Ionicons } from '@expo/vector-icons'
+import CircularFees from '../../components/CircularFees'
+import AppTextR from '../../components/poppins/AppTextR'
 
 const monthOptions = [
   'January', 'February', 'March', 'April', 'May', 'June',

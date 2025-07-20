@@ -1,11 +1,11 @@
 import { ScrollView, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
-import DashboardHeader from '@/components/DashboardHeader';
-import Dashboard from '@/app/sections/Dashboard';
-import Students from '@/app/sections/Students';
-import Notices from '@/app/sections/Notices';
-import Fees from '@/app/sections/Fees';
-import Attendance from '@/app/sections/Attendance'
+import DashboardHeader from '../components/DashboardHeader';
+import Dashboard from '../app/sections/Dashboard';
+import Students from '../app/sections/Students';
+import Notices from '../app/sections/Notices';
+import Fees from '../app/sections/Fees';
+import Attendance from '../app/sections/Attendance'
 
 const options = [
     { key: "Dashboard", icon: "grid-outline" },

@@ -2,9 +2,9 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
-import AppTextSB from '@/components/poppins/AppTextSB';
-import AppTextR from '@/components/poppins/AppTextR';
-import ShowMoreLess from '@/components/ShowMoreLess';
+import AppTextSB from '../../components/poppins/AppTextSB';
+import AppTextR from '../../components/poppins/AppTextR';
+import ShowMoreLess from '../../components/ShowMoreLess';
 
 const monthNames = [
   'January', 'February', 'March', 'April', 'May', 'June',

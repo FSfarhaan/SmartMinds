@@ -1,11 +1,10 @@
 import { View, Text, ScrollView, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
-import DashboardHeader from '@/components/DashboardHeader';
-import Notices from '@/app/sections/Notices';
-import StuDashboard from '@/app/sections/StuDashboard';
-import StuFees from '@/app/sections/StuFees';
-import StuAttendance from '@/app/sections/StuAttendance';
-
+import DashboardHeader from '../components/DashboardHeader';
+import Notices from '../app/sections/Notices';
+import StuDashboard from '../app/sections/StuDashboard';
+import StuFees from '../app/sections/StuFees';
+import StuAttendance from '../app/sections/StuAttendance';
 
 const options = [
   { key: "Dashboard", icon: "grid-outline" },

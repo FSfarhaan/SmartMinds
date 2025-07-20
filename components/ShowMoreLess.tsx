@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import AppTextSB from './poppins/AppTextSB'
-import { Student } from '@/types/StudentTypes';
-import { FeeData } from '@/types/FeesTypes';
+import { Student } from '../types/StudentTypes';
+import { FeeData } from '../types/FeesTypes';
 
 type StudentShift = {
     id: string;

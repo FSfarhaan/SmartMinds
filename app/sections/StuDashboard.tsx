@@ -1,9 +1,9 @@
 import { View, Dimensions } from "react-native";
 import React from "react";
-import TileTextImage from "@/components/TileTextImage";
-import TilePieChart from "@/components/TilePieChart";
-import TileBarChart from "@/components/TileBarChart";
-import TileDue from "@/components/TileDueFees";
+import TileTextImage from "../../components/TileTextImage";
+import TilePieChart from "../../components/TilePieChart";
+import TileBarChart from "../../components/TileBarChart";
+import TileDue from "../../components/TileDueFees";
 
 const getStatus = (fees: string) => {
     if(fees === "Paid") return "✅ Paid";
@@ -33,7 +33,7 @@ const StuDashboard = () => {
         item={{
           title: "Fees Status",
           content: feesStatus,
-          image: require("@/assets/images/personImage.png"),
+          image: require("../../assets/images/personImage.png"),
           flag: false
         }}
       />

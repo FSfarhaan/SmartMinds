@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { View, Image, TouchableOpacity, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import AppTextB from "@/components/poppins/AppTextB";
-import AppTextR from "@/components/poppins/AppTextR";
+import AppTextB from "../../components/poppins/AppTextB";
+import AppTextR from "../../components/poppins/AppTextR";
 import { ScrollView } from "react-native-gesture-handler";
 
 const today = new Date();

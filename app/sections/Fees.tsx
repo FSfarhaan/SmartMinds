@@ -7,12 +7,12 @@ import {
   Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AppTextSB from "@/components/poppins/AppTextSB";
-import AppTextR from "@/components/poppins/AppTextR";
-import AppTextB from "@/components/poppins/AppTextB";
-import TilePieChart from "@/components/TilePieChart";
-import { FeeData } from "@/types/FeesTypes";
-import ShowMoreLess from "@/components/ShowMoreLess";
+import AppTextSB from "../../components/poppins/AppTextSB";
+import AppTextR from "../../components/poppins/AppTextR";
+import AppTextB from "../../components/poppins/AppTextB";
+import TilePieChart from "../../components/TilePieChart";
+import { FeeData } from "../../types/FeesTypes";
+import ShowMoreLess from "../../components/ShowMoreLess";
 
 const monthNames = [
   "January",

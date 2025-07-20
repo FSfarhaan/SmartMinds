@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { View, ScrollView, FlatList, TouchableOpacity, Modal, Pressable} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AppTextR from "@/components/poppins/AppTextR";
-import AppTextSB from "@/components/poppins/AppTextSB";
-import StudentTableRow from "@/components/StudentTableRow";
-import { Student, StudentFilterState, StudentSortState } from "@/types/StudentTypes";
-import ShowMoreLess from "@/components/ShowMoreLess";
+import AppTextR from "../../components/poppins/AppTextR";
+import AppTextSB from "../../components/poppins/AppTextSB";
+import StudentTableRow from "../../components/StudentTableRow";
+import { Student, StudentFilterState, StudentSortState } from "../../types/StudentTypes";
+import ShowMoreLess from "../../components/ShowMoreLess";
 
 const sampleStudents: Student[] = [
   {

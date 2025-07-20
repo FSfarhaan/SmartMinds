@@ -3,7 +3,7 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import AppTextSB from './poppins/AppTextSB';
 import AppTextR from './poppins/AppTextR';
-import { Student } from '@/types/StudentTypes';
+import { Student } from '../types/StudentTypes';
 
 const Col = ({ val } : { val: string | number | undefined }) => {
     return (

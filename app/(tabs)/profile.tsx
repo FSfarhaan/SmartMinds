@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { View, Image, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import AppTextB from "@/components/poppins/AppTextB";
-import AppTextR from "@/components/poppins/AppTextR";
-import AppTextSB from "@/components/poppins/AppTextSB";
+import AppTextB from "../../components/poppins/AppTextB";
+import AppTextR from "../../components/poppins/AppTextR";
+import AppTextSB from "../../components/poppins/AppTextSB";
 
 const defaultProfile = {
   name: "Farhaan Shaikh",

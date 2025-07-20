@@ -1,9 +1,9 @@
 import { View, Dimensions } from "react-native";
 import React from "react";
-import TileTextImage from "@/components/TileTextImage";
-import TilePieChart from "@/components/TilePieChart";
-import TileBarChart from "@/components/TileBarChart";
-import TileDue from "@/components/TileDueFees";
+import TileTextImage from "../../components/TileTextImage";
+import TilePieChart from "../../components/TilePieChart";
+import TileBarChart from "../../components/TileBarChart";
+import TileDue from "../../components/TileDueFees";
 
 const Dashboard = () => {
   const dueTile = {
@@ -22,7 +22,7 @@ const Dashboard = () => {
         item={{
           title: "No. of students",
           content: "Male: 30, Female: 20,\nTotal: 50",
-          image: require("@/assets/images/personImage.png"),
+          image: require("../../assets/images/personImage.png"),
           flag: true
         }}
       />

@@ -6,9 +6,9 @@ import {
   LayoutAnimation,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AppTextR from "@/components/poppins/AppTextR";
-import AppTextSB from "@/components/poppins/AppTextSB";
-import { Notice } from "@/types/NoticeTypes";
+import AppTextR from "../../components/poppins/AppTextR";
+import AppTextSB from "../../components/poppins/AppTextSB";
+import { Notice } from "../../types/NoticeTypes";
 
 const sampleNotices: Notice[] = [
   {
