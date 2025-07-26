@@ -26,3 +26,10 @@ export const getAllStudents = async () => {
     const response = await axios.get(`${baseURL}/students`);
     return response.data;
 };
+
+
+// api/notices
+export const getAllNotices = async () => {
+    const response = await axios.get(`${baseURL}/notices`);
+    return response.data;
+};

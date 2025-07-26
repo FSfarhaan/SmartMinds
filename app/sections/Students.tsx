@@ -502,7 +502,6 @@ const StudentData = () => {
   const { data, loading, error } = useFetchData(fetchData);
   const { data: stuData, loading: stuLoading, error: stuError, postData } = usePostData();
 
-
   useEffect(() => {
     if (stuData) {
       console.log("Sab badhiya:", stuData);
@@ -519,7 +518,7 @@ const StudentData = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
+      // console.log(data);
       setSampleStudent(data);
     }
   }, [data]);
@@ -531,24 +530,6 @@ const StudentData = () => {
     console.log("Creating student:");
 
     await postData(() => postStudent(actualData));
-
-
-    // try {
-    //   const res = await postStudent(actualData);
-    //   console.log('Success:', res);
-    // } catch (e) {
-    //   console.log('Direct call failed:', e);
-    // }
-
-    // postData(() => postStudent(actualData));
-    // if(stuError) console.log(stuError);
-    // else console.log("Sab badhiya: " + stuData);
-
-    // const response = await axios.post('http://192.168.67.209:3000/api/students', actualData)
-    // console.log(response.data);
-    // if(response.status === 201) {
-    //   setSampleStudent((prev) => [...prev, response.data]);
-    // }
     
   };
 

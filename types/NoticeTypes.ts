@@ -1,8 +1,8 @@
 export type Notice = {
-    id: string;
+    _id: string;
     title: string;
     date: string;
     subtitle: string;
-    details: string;
+    content: string;
     lastDate?: string;
   }
