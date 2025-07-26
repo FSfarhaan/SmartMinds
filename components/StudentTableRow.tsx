@@ -26,17 +26,20 @@ const Col = ({ val } : { val: string | number | undefined }) => {
     );
 }
 
-const StudentTableRow = ({ item, index, selected, toggleSelect }: {
+const StudentTableRow = ({ item, index, selected, toggleSelect, onEdit }: {
     item: Student;
     index: number;
     selected: string[];
     toggleSelect: (id: string) => void;
+    onEdit?: (student: Student) => void;
   }) => (
-    <View
+    <TouchableOpacity
       className={`flex-row items-center border-unselected-dark ${
         index % 2 === 0 ? "bg-white" : "bg-blue-50"
       } my-2 rounded-xl`}
       style={{ borderWidth: 0.2 }}
+      onPress={() => onEdit?.(item)}
+      activeOpacity={0.7}
     >
       {/* Checkbox */}
       <TouchableOpacity
@@ -46,12 +49,12 @@ const StudentTableRow = ({ item, index, selected, toggleSelect }: {
           justifyContent: "center",
           height: 48,
         }}
-        onPress={() => toggleSelect(item.id)}
+        onPress={() => toggleSelect(item._id)}
       >
         <Ionicons
-          name={selected.includes(item.id) ? "checkbox" : "square-outline"}
+          name={selected.includes(item._id) ? "checkbox" : "square-outline"}
           size={20}
-          color={selected.includes(item.id) ? "#1672EC" : "#888"}
+          color={selected.includes(item._id) ? "#1672EC" : "#888"}
         />
       </TouchableOpacity>
       
@@ -90,11 +93,11 @@ const StudentTableRow = ({ item, index, selected, toggleSelect }: {
       <Col val={item.std}/>
       <Col val={item.school}/>
       <Col val={item.phone}/>
-      <Col val={item.shift}/>
+      <Col val={item.shiftNumber}/>
       <Col val={item.joiningDate}/>
       <Col val={item.leavingDate}/>
       <Col val={item.feesTotal}/>
-    </View>
+    </TouchableOpacity>
   );
 
 

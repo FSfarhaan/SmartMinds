@@ -1,12 +1,13 @@
 export type Student = {
-    id: string;
+    _id: string,
+    // id: string;
     name: string;
     avatar?: string;
-    gender: "M" | "F";
+    gender: "male" | "female";
     std: string;
     school: string;
     phone: string;
-    shift: string;
+    shiftNumber: string;
     joiningDate: string;
     leavingDate?: string;
     feesTotal: number;
@@ -16,7 +17,7 @@ export type Student = {
     gender?: string;
     std?: string;
     school?: string;
-    shift?: string;
+    shiftNumber?: string;
   };
 
   export type StudentSortState = {
