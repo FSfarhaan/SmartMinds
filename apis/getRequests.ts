@@ -45,3 +45,10 @@ export const getStudentFees = async (month: string, status: string) => {
     const response = await axios.get(`${baseURL}/fees/students?month=${month}&status=${status}`);
     return response.data;
 };
+
+
+// api/attendance
+export const getAllAttendances = async (shift: string, month: string) => {
+    const response = await axios.get(`${baseURL}/attendance?month=${month}&shift=${shift}`);
+    return response.data;
+};

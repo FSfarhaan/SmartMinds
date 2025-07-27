@@ -4,6 +4,12 @@ import axios from 'axios';
 
 const baseURL = 'http://192.168.67.209:3000/api';
 
+type markAttendance = { 
+  studentId: string,
+  present: boolean,
+  date: string
+}
+
 // api/students
 export const postStudent = async (payload: Omit<Student, "_id">) => {
   const res = await axios.post(`${baseURL}/students`, payload);
@@ -15,3 +21,11 @@ export const postNotices = async (payload: Omit<Notice, "_id">) => {
   const res = await axios.post(`${baseURL}/notices`, payload);
   return res.data;
 };
+
+// api/attendance
+export const postAttendanec = async (payload: markAttendance) => {
+  const res = await axios.post(`${baseURL}/attendance/mark`, payload);
+  return res.data;
+};
+
+

@@ -11,6 +11,10 @@ export type Student = {
     joiningDate: string;
     leavingDate?: string;
     feesTotal: number;
+    attendance: {
+      date: string;
+      present: boolean;
+    }[];
   }
 
   export type StudentFilterState = {
