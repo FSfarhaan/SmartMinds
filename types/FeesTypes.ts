@@ -1,5 +1,5 @@
 export type FeeData = {
-    id: string;
+    _id: string;
     name: string;
     avatar: string;
     status: "Paid" | "Pending" | "Due";

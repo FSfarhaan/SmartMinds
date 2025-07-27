@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   View,
   FlatList,
   TouchableOpacity,
   Image,
   Dimensions,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import AppTextSB from "../../components/poppins/AppTextSB";
@@ -13,6 +14,10 @@ import AppTextB from "../../components/poppins/AppTextB";
 import TilePieChart from "../../components/TilePieChart";
 import { FeeData } from "../../types/FeesTypes";
 import ShowMoreLess from "../../components/ShowMoreLess";
+import { useFetchData } from "@/hooks/useFetchData";
+import { getFeesPie, getStudentFees } from "@/apis/getRequests";
+import { Student } from "@/types/StudentTypes";
+import axios from "axios";
 
 const monthNames = [
   "January",
@@ -32,7 +37,13 @@ const monthNames = [
 type FeeStatus = "Paid" | "Pending" | "Due";
 type ActiveTab = "All" | "Paid" | "Pending" | "Due";
 
-type MonthFilter = "Show all" | (typeof monthNames)[number];
+type MonthFilter = (typeof monthNames)[number];
+type FeesDataType = { 
+  total: number,
+  paid: number,
+  due: number,
+  pending: number
+}
 
 // Generate sample data for each month up to current month
 const now = new Date();
@@ -40,66 +51,67 @@ const currentYear = now.getFullYear();
 const currentMonthIndex = now.getMonth();
 const monthsUpToNow = monthNames.slice(0, currentMonthIndex + 1);
 
-const sampleFeeData: FeeData[] = monthsUpToNow.flatMap((month, idx) => [
-  {
-    id: `${idx + 1}-1`,
-    name: `Farhaan Shaikh`,
-    avatar: `https://randomuser.me/api/portraits/men/${idx + 1}.jpg`,
-    status: "Paid",
-    amount: 10000 + idx * 1000,
-    dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-10`,
-  },
-  {
-    id: `${idx + 1}-2`,
-    name: `Aditya Jambhale`,
-    avatar: `https://randomuser.me/api/portraits/women/${idx + 1}.jpg`,
-    status: "Pending",
-    amount: 9000 + idx * 900,
-    dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-15`,
-  },
-  {
-    id: `${idx + 1}-3`,
-    name: `Sejal Khilari`,
-    avatar: `https://randomuser.me/api/portraits/women/${idx + 11}.jpg`,
-    status: "Paid",
-    amount: 8000 + idx * 800,
-    dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
-  },
-  {
-    id: `${idx + 1}-4`,
-    name: `Atharva Khond`,
-    avatar: `https://randomuser.me/api/portraits/men/${idx + 11}.jpg`,
-    status: "Due",
-    amount: 8000 + idx * 800,
-    dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
-  },
-  {
-    id: `${idx + 1}-5`,
-    name: `Tamasi Ghosh`,
-    avatar: `https://randomuser.me/api/portraits/women/${idx + 10}.jpg`,
-    status: "Due",
-    amount: 8000 + idx * 800,
-    dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
-  },
-  {
-    id: `${idx + 1}-6`,
-    name: `Aniket Salvi`,
-    avatar: `https://randomuser.me/api/portraits/men/${idx + 7}.jpg`,
-    status: "Paid",
-    amount: 8000 + idx * 800,
-    dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
-  },
-  {
-    id: `${idx + 1}-7`,
-    name: `Diksha Tamhankar`,
-    avatar: `https://randomuser.me/api/portraits/women/${idx + 7}.jpg`,
-    status: "Pending",
-    amount: 8000 + idx * 800,
-    dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
-  },
-]);
+//@ts-ignore
+// const sampleFeeData: FeeData[] = monthsUpToNow.flatMap((month, idx) => [
+//   {
+//     _id: `${idx + 1}-1`,
+//     name: `Farhaan Shaikh`,
+//     avatar: `https://randomuser.me/api/portraits/men/${idx + 1}.jpg`,
+//     status: "Paid",
+//     amount: 10000 + idx * 1000,
+//     dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-10`,
+//   },
+//   {
+//     _id: `${idx + 1}-2`,
+//     name: `Aditya Jambhale`,
+//     avatar: `https://randomuser.me/api/portraits/women/${idx + 1}.jpg`,
+//     status: "Pending",
+//     amount: 9000 + idx * 900,
+//     dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-15`,
+//   },
+//   {
+//     _id: `${idx + 1}-3`,
+//     name: `Sejal Khilari`,
+//     avatar: `https://randomuser.me/api/portraits/women/${idx + 11}.jpg`,
+//     status: "Paid",
+//     amount: 8000 + idx * 800,
+//     dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
+//   },
+//   {
+//     id: `${idx + 1}-4`,
+//     name: `Atharva Khond`,
+//     avatar: `https://randomuser.me/api/portraits/men/${idx + 11}.jpg`,
+//     status: "Due",
+//     amount: 8000 + idx * 800,
+//     dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
+//   },
+//   {
+//     _id: `${idx + 1}-5`,
+//     name: `Tamasi Ghosh`,
+//     avatar: `https://randomuser.me/api/portraits/women/${idx + 10}.jpg`,
+//     status: "Due",
+//     amount: 8000 + idx * 800,
+//     dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
+//   },
+//   {
+//     _id: `${idx + 1}-6`,
+//     name: `Aniket Salvi`,
+//     avatar: `https://randomuser.me/api/portraits/men/${idx + 7}.jpg`,
+//     status: "Paid",
+//     amount: 8000 + idx * 800,
+//     dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
+//   },
+//   {
+//     _id: `${idx + 1}-7`,
+//     name: `Diksha Tamhankar`,
+//     avatar: `https://randomuser.me/api/portraits/women/${idx + 7}.jpg`,
+//     status: "Pending",
+//     amount: 8000 + idx * 800,
+//     dueDate: `${currentYear}-${String(idx + 1).padStart(2, "0")}-20`,
+//   },
+// ]);
 
-const StatusTag = ({ status }: { status: FeeStatus }) => {
+const StatusTag = ({ status }: { status: string }) => {
   const bgColor =
     status === "Paid"
       ? "bg-green-100"
@@ -114,7 +126,7 @@ const StatusTag = ({ status }: { status: FeeStatus }) => {
       : "text-gray-700";
 
   return (
-    <View className={`px-3 py-1 rounded-full ${bgColor}`}>
+    <View className={`px-4 py-2 rounded-full ${bgColor}`}>
       <AppTextSB className={`font-semibold text-xs ${textColor}`}>
         {status}
       </AppTextSB>
@@ -126,62 +138,76 @@ const screenWidth = Dimensions.get("window").width;
 const pieChartSize = screenWidth - 64;
 
 const FeesSection = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>("All");
+  const [activeTab, setActiveTab] = useState<ActiveTab>("Paid");
   const [monthFilter, setMonthFilter] = useState<MonthFilter>(
     monthNames[currentMonthIndex]
   );
   const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(5);
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [feesData, setFeesData] = useState<FeesDataType>();
+  const [feesTable, setFeesTable] = useState<Student[]>([]);
+
+  const fetchData = async () => {
+    const [feesSummary, feesTable] = await Promise.all(
+      [getFeesPie(monthFilter), getStudentFees(monthFilter, activeTab.toLowerCase())]
+    );
+    return { feesSummary, feesTable }
+  }
+
+  const { data, loading, error } = useFetchData(fetchData, [monthFilter, activeTab]);
+
+  if(error) console.log(error);
+  else console.log("Changa si");
+  useEffect(() => {
+    if (data) {
+      // console.log("HEllo ji");
+      setFeesData(data.feesSummary);
+      setFeesTable(data?.feesTable);
+      console.log(data?.feesTable.length);
+    }
+  }, [data]);
 
   // Dropdown options: Show all + months up to current
   const monthOptions: MonthFilter[] = [...monthsUpToNow];
 
   // Filter by month
-  const monthFilteredData = useMemo(() => {
-    if (monthFilter === "Show all") return sampleFeeData;
-    const monthIdx = monthNames.indexOf(monthFilter);
-    return sampleFeeData.filter((item) => {
-      const itemMonth = new Date(item.dueDate).getMonth();
-      return itemMonth === monthIdx;
-    });
-  }, [monthFilter]);
+  // const monthFilteredData = useMemo(() => {
+  //   if (monthFilter === "Show all") return sampleFeeData;
+  //   const monthIdx = monthNames.indexOf(monthFilter);
+  //   return sampleFeeData.filter((item) => {
+  //     const itemMonth = new Date(item.dueDate).getMonth();
+  //     return itemMonth === monthIdx;
+  //   });
+  // }, [monthFilter]);
 
   // Filter by status tab
-  const filteredData = useMemo(() => {
-    if (activeTab === "Paid")
-      return monthFilteredData.filter((item) => item.status === "Paid");
-    if (activeTab === "Pending")
-      return monthFilteredData.filter((item) => item.status === "Pending");
-    if (activeTab === "Due")
-      return monthFilteredData.filter((item) => item.status === "Due");
-    return monthFilteredData;
-  }, [activeTab, monthFilteredData]);
+  // const filteredData = useMemo(() => {
+  //   if (activeTab === "Paid")
+  //     return monthFilteredData.filter((item) => item.status === "Paid");
+  //   if (activeTab === "Pending")
+  //     return monthFilteredData.filter((item) => item.status === "Pending");
+  //   if (activeTab === "Due")
+  //     return monthFilteredData.filter((item) => item.status === "Due");
+  //   return monthFilteredData;
+  // }, [activeTab, monthFilteredData]);
 
-  const dataToShow = filteredData.slice(0, visibleCount);
+  const dataToShow = feesTable.slice(0, visibleCount + 1);
 
   // Pie chart data
-  const { totalFees, totalPaid, totalDue, pieData } = useMemo(() => {
-    const paid = monthFilteredData
-      .filter((f) => f.status === "Paid")
-      .reduce((sum, f) => sum + f.amount, 0);
-    const due = monthFilteredData
-      .filter((f) => f.status === "Due")
-      .reduce((sum, f) => sum + f.amount, 0);
-    const pending = monthFilteredData
-      .filter((f) => f.status === "Pending")
-      .reduce((sum, f) => sum + f.amount, 0);
-    const total = paid + due + pending;
+  const summaryData = useMemo(() => {
     return {
-      totalFees: total,
-      totalPaid: paid,
-      totalDue: due,
+      totalFees: feesData?.total || 0,
+      totalPaid: feesData?.paid || 0,
+      totalDue: feesData?.due || 0,
+      totalPending: feesData?.pending || 0,
       pieData: [
-        { name: "Paid", value: paid, color: "#4CAF50" },
-        { name: "Pending", value: pending, color: "#404454" },
-        { name: "Due", value: due, color: "#F44336" },
+        { name: "Paid", value: feesData?.paid || 0, color: "#4CAF50" },
+        { name: "Pending", value: feesData?.pending || 0, color: "#404454" },
+        { name: "Due", value: feesData?.due || 0, color: "#F44336" },
       ],
     };
-  }, [monthFilteredData]);
+  }, [feesData]);
+  
 
   const renderHeader = () => {
     return (
@@ -247,13 +273,52 @@ const FeesSection = () => {
           <AppTextR className="text-gray-500 text-sm">{title}</AppTextR>
         </View>
         <AppTextSB className={`text-base`} style={{ color: background }}>
-          ${totalPaid.toFixed(2)}
+          {title === "Paid" ? summaryData?.totalPaid.toFixed(2) :
+          title === "Pending" ? summaryData?.totalPending.toFixed(2): 
+          summaryData?.totalDue.toFixed(2)}
         </AppTextSB>
       </View>
     );
   };
 
-  const renderRow = (item: FeeData, index: number) => {
+  const handleStatusUpdate = async (studentId: string, month:string, status: string) => {
+    console.log(studentId, month, status);
+    try {
+      const response = await axios.patch('http://192.168.67.209:3000/api/fees/update-fee', {studentId, month, status});
+      console.log(response.data);
+      
+    }catch(err) {
+      console.log(err);
+    }
+  }
+
+  const handleStatusChange = (id: string) => {
+    console.log("Andar aaay")
+    const nextStatus = activeTab === 'Paid' ? 'Not Paid' : 'Paid';
+    const newStatus = nextStatus === 'Paid' ? 'paid': 'pending';
+    Alert.alert(
+      'Changing Fees Status',
+      `Do you want to change this status to "${nextStatus}"?`,
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            handleStatusUpdate(id, monthFilter, newStatus);
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  }
+
+  const renderRow = (item: Student, index: number) => {
+    const handlePress = () => {
+      console.log("touch hora")
+    }
     return (
       <View
         className={`flex-row items-center ${
@@ -262,18 +327,20 @@ const FeesSection = () => {
         style={{ borderWidth: 0.2 }}
       >
         <Image
-          source={{ uri: item.avatar }}
+          source={{ uri: item.avatar || "https://ui-avatars.com/api/?name=" + item.name }}
           className="w-10 h-10 rounded-full mr-4"
         />
         <View className="flex-1">
           <AppTextSB className=" text-base text-unselected-dark">
             {item.name}
           </AppTextSB>
-          <AppTextR className="text-sm text-unselected-light">
+          {/* <AppTextR className="text-sm text-unselected-light">
             Due on {item.dueDate}
-          </AppTextR>
+          </AppTextR> */}
         </View>
-        <StatusTag status={item.status} />
+        <TouchableOpacity onPress={() => handleStatusChange(item._id)}>
+            <StatusTag status={activeTab} />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -287,19 +354,19 @@ const FeesSection = () => {
         {/* Header */}
         {renderHeader()}
 
-        <TilePieChart
+        {summaryData && <TilePieChart
           item={{
-            pieData,
+            pieData: summaryData.pieData,
             width: pieChartSize,
             height: pieChartSize / 2,
             //@ts-ignore
             pLeft: pieChartSize / 4,
             showLegends: false,
           }}
-        />
+        />}
 
         <AppTextB className="text-3xl text-unselected-dark">
-          ${totalFees.toFixed(2)}
+          ${summaryData.totalFees.toFixed(2)}
         </AppTextB>
         <AppTextR className="text-sm text-gray-500 mb-4">Total fees</AppTextR>
         <View className="flex-row justify-around w-full">
@@ -317,10 +384,13 @@ const FeesSection = () => {
         className="flex-row mb-4"
         style={{ borderBottomWidth: 0.2, borderBottomColor: "gray" }}
       >
-        {["All", "Paid", "Pending", "Due"].map((tab) => (
+        {["Paid", "Pending", "Due"].map((tab) => (
           <TouchableOpacity
             key={tab}
-            onPress={() => setActiveTab(tab as ActiveTab)}
+            onPress={() => {
+              setVisibleCount(3);
+              setActiveTab(tab as ActiveTab)}
+            } 
             className="mr-4"
             style={{
               borderBottomWidth: activeTab === tab ? 2 : 0,
@@ -340,17 +410,49 @@ const FeesSection = () => {
 
       <FlatList
         data={dataToShow}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         scrollEnabled={false}
         renderItem={({ item, index }) => renderRow(item, index)}
       />
 
-      <ShowMoreLess 
-        filteredData={filteredData} 
-        sampleData={sampleFeeData} 
+      {/* <ShowMoreLess 
+        filteredData={dataToShow} 
+        sampleData={feesTable} 
         setVisibleCount={setVisibleCount} 
         visibleCount={visibleCount}
-      />
+      /> */}
+      <View className="items-center my-2">
+        {visibleCount < dataToShow.length ? (
+          <View className="flex flex-row gap-x-2">
+            <TouchableOpacity
+              className="flex-1 px-4 py-2 bg-transparent rounded-xl border-primary border"
+              onPress={() => setVisibleCount((c) => c + 4)}
+            >
+              <AppTextSB className="text-sm text-center text-blue-700">
+                Load more
+              </AppTextSB>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              className="flex-1 px-4 py-2 bg-primary rounded-xl"
+              onPress={() => setVisibleCount(feesTable.length)}
+            >
+              <AppTextSB className="text-sm text-center text-white">
+                Show All
+              </AppTextSB>
+            </TouchableOpacity>
+          </View>
+        ) : feesTable.length > 4 ? (
+          <TouchableOpacity
+            className="w-full px-4 py-2 bg-transparent rounded-xl border-redShade-dark border"
+            onPress={() => setVisibleCount(3)}
+          >
+            <AppTextSB className="text-sm text-center text-redShade-dark">
+              Show less
+            </AppTextSB>
+          </TouchableOpacity>
+        ) : null}
+      </View>
     
     </View>
   );

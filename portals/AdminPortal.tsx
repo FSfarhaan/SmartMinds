@@ -16,7 +16,7 @@ const options = [
 ];
 
 const AdminPortal = () => {
-  const [selected, setSelected] = useState("Notices");
+  const [selected, setSelected] = useState("Fees");
 
   return (
     <SafeAreaView className="flex-1 bg-background pb-28">

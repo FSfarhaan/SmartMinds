@@ -490,10 +490,6 @@ const StudentData = () => {
   const [visibleCount, setVisibleCount] = useState(5);
   const [sampleStudents, setSampleStudent] = useState<Student[]>([]);
 
-
-  
-  
-
   const fetchData = async () => {
     const response = await getAllStudents();
     return response;

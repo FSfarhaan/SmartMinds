@@ -33,3 +33,15 @@ export const getAllNotices = async () => {
     const response = await axios.get(`${baseURL}/notices`);
     return response.data;
 };
+
+
+// api/fees
+export const getFeesPie = async (month: string) => {
+    const response = await axios.get(`${baseURL}/fees/summary?month=${month}`);
+    return response.data;
+};
+
+export const getStudentFees = async (month: string, status: string) => {
+    const response = await axios.get(`${baseURL}/fees/students?month=${month}&status=${status}`);
+    return response.data;
+};
