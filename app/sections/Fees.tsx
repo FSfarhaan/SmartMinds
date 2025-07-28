@@ -18,6 +18,7 @@ import { useFetchData } from "@/hooks/useFetchData";
 import { getFeesPie, getStudentFees } from "@/apis/getRequests";
 import { Student } from "@/types/StudentTypes";
 import axios from "axios";
+import { patchAttendanceChange } from "@/apis/patchRequests";
 
 const monthNames = [
   "January",
@@ -284,9 +285,9 @@ const FeesSection = () => {
   const handleStatusUpdate = async (studentId: string, month:string, status: string) => {
     console.log(studentId, month, status);
     try {
-      const response = await axios.patch('http://192.168.67.209:3000/api/fees/update-fee', {studentId, month, status});
-      console.log(response.data);
-      
+      // const response = await axios.patch('http://192.168.67.209:3000/api/fees/update-fee', {studentId, month, status});
+      // console.log(response.data);
+      await patchAttendanceChange(studentId, month, status);
     }catch(err) {
       console.log(err);
     }

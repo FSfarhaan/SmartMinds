@@ -99,7 +99,7 @@ const StudentModalForm = ({
         school: student.school,
         phone: student.phone,
         shiftNumber: student.shiftNumber,
-        joiningDate: student.joiningDate,
+        joiningDate: student.joiningDate.split("T")[0],
         feesTotal: student.feesTotal,
       });
     } else {
@@ -589,7 +589,9 @@ const StudentData = () => {
   // Sorting
   filteredStudents.sort((a, b) => {
     const { key, direction } = sort;
+    //@ts-ignore
     let aVal: string | number = a[key] ?? "";
+    //@ts-ignore
     let bVal: string | number = b[key] ?? "";
 
     if (key === "std" || key === "feesTotal") {

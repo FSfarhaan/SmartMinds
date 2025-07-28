@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useEffect, act } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { View, TouchableOpacity, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 import AppTextSB from '../../components/poppins/AppTextSB';
@@ -9,7 +9,8 @@ import { useFetchData } from '@/hooks/useFetchData';
 import { getAllAttendances } from '@/apis/getRequests';
 import { Student } from '@/types/StudentTypes';
 import axios from 'axios';
-import { postAttendanec } from '@/apis/postRequest';
+import { postAttendance } from '@/apis/postRequest';
+import { deleteAttendance } from '@/apis/deleteRequests';
 
 const monthNames = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -23,71 +24,10 @@ const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0
 
 const shifts = ['Shift 1', 'Shift 2', 'Shift 3'];
 
-// const students = [
-//     { id: '1', name: 'Farhaan Shaikh', shift: 'Shift 1' },
-//     { id: '2', name: 'Aditya Jambhale', shift: 'Shift 2' },
-//     { id: '3', name: 'Sejal Khilary', shift: 'Shift 3' },
-//     { id: '4', name: 'John Carter', shift: 'Shift 1' },
-//     { id: '5', name: 'Emily Watson', shift: 'Shift 2' },
-//     { id: '6', name: 'Michael Brown', shift: 'Shift 3' },
-//     { id: '7', name: 'Sophia Miller', shift: 'Shift 1' },
-//     { id: '8', name: 'Liam Johnson', shift: 'Shift 2' },
-//     { id: '9', name: 'Olivia Taylor', shift: 'Shift 3' },
-//     { id: '10', name: 'Noah Wilson', shift: 'Shift 1' },
-//     { id: '11', name: 'Ava Moore', shift: 'Shift 2' },
-//     { id: '12', name: 'Lucas Martin', shift: 'Shift 3' },
-//     { id: '13', name: 'Mia Anderson', shift: 'Shift 1' },
-//     { id: '14', name: 'Ethan Thomas', shift: 'Shift 2' },
-//     { id: '15', name: 'Charlotte White', shift: 'Shift 3' },
-//     { id: '16', name: 'James Harris', shift: 'Shift 1' },
-//     { id: '17', name: 'Amelia Clark', shift: 'Shift 2' },
-//     { id: '18', name: 'Benjamin Lewis', shift: 'Shift 3' },
-//     { id: '19', name: 'Harper Young', shift: 'Shift 1' },
-//     { id: '20', name: 'Alexander Hall', shift: 'Shift 2' },
-//     { id: '21', name: 'Evelyn Scott', shift: 'Shift 3' },
-//     { id: '22', name: 'Henry Green', shift: 'Shift 1' },
-//     { id: '23', name: 'Abigail Adams', shift: 'Shift 2' },
-//     { id: '24', name: 'Daniel Baker', shift: 'Shift 3' },
-//     { id: '25', name: 'Scarlett Nelson', shift: 'Shift 1' },
-//     { id: '26', name: 'Logan Roberts', shift: 'Shift 2' },
-//     { id: '27', name: 'Grace Turner', shift: 'Shift 3' },
-//     { id: '28', name: 'Jackson Phillips', shift: 'Shift 1' },
-//     { id: '29', name: 'Chloe Campbell', shift: 'Shift 2' },
-//     { id: '30', name: 'Sebastian Parker', shift: 'Shift 3' },
-//     { id: '31', name: 'Lily Evans', shift: 'Shift 1' },
-//     { id: '32', name: 'Jayden Edwards', shift: 'Shift 2' },
-//     { id: '33', name: 'Hannah Collins', shift: 'Shift 3' },
-//     { id: '34', name: 'Matthew Stewart', shift: 'Shift 1' },
-//     { id: '35', name: 'Zoey Morris', shift: 'Shift 2' },
-//     { id: '36', name: 'Jack Rogers', shift: 'Shift 3' },
-//     { id: '37', name: 'Riley Cook', shift: 'Shift 1' },
-//     { id: '38', name: 'Nathan Reed', shift: 'Shift 2' },
-//     { id: '39', name: 'Avery Morgan', shift: 'Shift 3' },
-//     { id: '40', name: 'Elijah Bell', shift: 'Shift 1' },
-//     { id: '41', name: 'Layla Murphy', shift: 'Shift 2' },
-//     { id: '42', name: 'Samuel Bailey', shift: 'Shift 3' },
-//     { id: '43', name: 'Nora Rivera', shift: 'Shift 1' },
-//     { id: '44', name: 'Owen Cooper', shift: 'Shift 2' },
-//     { id: '45', name: 'Lillian Richardson', shift: 'Shift 3' },
-//     { id: '46', name: 'Gabriel Cox', shift: 'Shift 1' },
-//     { id: '47', name: 'Aria Howard', shift: 'Shift 2' },
-//     { id: '48', name: 'David Ward', shift: 'Shift 3' },
-//     { id: '49', name: 'Eleanor Torres', shift: 'Shift 1' },
-//     { id: '50', name: 'Julian Peterson', shift: 'Shift 2' }
-//   ];
-
 const cellWidth = 36;
 const nameColWidth = 120;
 const totalColWidth = 60;
 const rowHeight = 44;
-
-type AttendanceMap = {
-  [monthIndex: number]: {
-    [studentId: string]: {
-      [day: number]: 'P' | 'A' | '';
-    };
-  };
-};
 
 const transformAttendanceData = (rawStudents: Student[]) => {
   const structured: {
@@ -122,13 +62,16 @@ const AttendanceSection = () => {
   const [attendanceData, setAttendanceData] = useState<Student[]>([]);
   const [attendance, setAttendance] = useState(() => transformAttendanceData(attendanceData));
 
+  useEffect(() => {
+    console.log("attendanceData", attendanceData);
+    console.log("attendance", attendance);
+  }, [attendanceData, attendance]);
 
   let shiftNumber;
   const fetchData = async() => {
     shiftNumber = activeShift.split(" ")[1];
-    // console.log(activeShift);
+    console.log(activeShift);
     const response = await getAllAttendances(shiftNumber, selectedMonth);
-    // console.log(shiftNumber, selectedMonth)
     return response;
   }
 
@@ -136,17 +79,11 @@ const AttendanceSection = () => {
 
   useEffect(() => {
     if(data) {
-      // console.log(data[0]);
       console.log("Run hona chahiye");
       setAttendanceData(data);
-      // setAttendance(transformAttendanceData(data));
+      setAttendance(transformAttendanceData(data));
     } 
-  }, [data, activeShift, selectedMonth]);
-
-  
-  useEffect(() => {
-    setAttendance(transformAttendanceData(attendanceData));
-  }, [attendanceData]);
+  }, [activeShift, data, selectedMonth]);
   
 
   // Only months up to current
@@ -155,101 +92,56 @@ const AttendanceSection = () => {
   const numDays = daysInMonth(currentYear, selectedMonthIdx);
 
   // Filter students by shift
-  const filteredStudents = useMemo(
-    () => attendanceData?.filter((s) => "Shift " + s.shiftNumber === activeShift),
-    [activeShift]
-  );
-  const studentsToShow = filteredStudents.slice(0, visibleCount);
-
+  const filteredStudents = useMemo(() => {
+    if (!attendanceData || attendanceData.length === 0) return [];
+    return attendanceData.filter((s) => "Shift " + s.shiftNumber === activeShift);
+  }, [attendanceData, activeShift]);
   
-  // console.log(activeShift);
+  const studentsToShow = filteredStudents?.slice(0, visibleCount);
 
-  // Attendance state: { [monthIdx]: { [studentId]: { [day]: 'P' | 'A' | '' } } }
-
-  // const [attendance, setAttendance] = useState(() => {
-  //   const initial: Record<number, Record<string, Record<number, 'P' | 'A' | ''>>> = {};
-  //   // Initialize current month
-  //   initial[currentMonthIndex] = {};
-  //   attendanceData.forEach((s) => {
-  //     initial[currentMonthIndex][s._id] = {};
-  //     for (let d = 1; d <= 31; d++) initial[currentMonthIndex][s._id][d] = '';
-  //   });
-  //   return initial;
-  // });
-
-  // const attendance = transformAttendanceData(attendanceData);
-
-  console.log(attendance);
-
-  // Ensure attendance for selected month is initialized
-  // useEffect(() => {
-  //   setAttendance((prev) => {
-  //     if (prev[selectedMonthIdx]) return prev;
-  //     const newMonth: Record<string, Record<number, 'P' | 'A' | ''>> = {};
-  //     attendanceData.forEach((s) => {
-  //       newMonth[s._id] = {};
-  //       for (let d = 1; d <= 31; d++) newMonth[s._id][d] = '';
-  //     });
-  //     return { ...prev, [selectedMonthIdx]: newMonth };
-  //   });
-  // }, [selectedMonthIdx]);
-
-  // Handle cell click: cycle '', 'P', 'A', '' for selected month
+  // Handle cell click: cycle 'P', 'A', '' for selected month
   const handleCellPress = async (studentId: string, day: number, value: string) => {
     // let next: 'P' | 'A' | '' = '';
     //   if (curr === '') next = 'P';
     //   else if (curr === 'P') next = 'A';
     //   else if (curr === 'A') next = '';
-    let present = true;
-    if(value !== 'A') {
-      const fDay = day < 10 ? "0" + day : day
-      const date = `${now.getFullYear()}-${selectedMonthIdx + 1}-${fDay}`;
-      console.log(value);
-      if(!value) present = true;
-      else if(value === 'P') present = false;
-      const payload = {
-        studentId, date, present
-      }
+    const fDay = day < 10 ? "0" + day : day
+    const fMonth = selectedMonthIdx + 1 < 10 ? `0${selectedMonthIdx + 1}` : selectedMonthIdx + 1;
+    const date = `${now.getFullYear()}-${fMonth}-${fDay}`;
 
-      // console.log(payload);
+    const next: 'P' | 'A' | '' = value === '' ? 'P' : value === 'P' ? 'A' : '';
 
-      try {
-        const res = await postAttendanec(payload);
-          setAttendance((prev) => {
-            const monthData = prev[selectedMonthIdx] || {};
-            const studentData = monthData[studentId] || {};
-            const curr = studentData[day] || '';
-        
-            let next: 'P' | 'A' | '' = '';
-            if (curr === '') next = 'P';
-            else if (curr === 'P') next = 'A';
-            else if (curr === 'A') next = '';
-            return {
-              ...prev,
-              [selectedMonthIdx]: {
-                ...monthData,
-                [studentId]: {
-                  ...studentData,
-                  [day]: next,
-                },
-              },
-            };
-          });
-    
-      // console.log(date);
-      } catch (err) {
-        console.log(err);
-      }
+  try {
+    if (next === '') {
+      await deleteAttendance(studentId, date);
+    } else {
+      await postAttendance({ studentId, date, present: next === 'P' });
     }
-    //
-  };
+  } catch (err) {
+    console.log(err);
+  }
 
-  
+  // Update local state
+  setAttendance(prev => {
+    const monthData = prev[selectedMonthIdx] || {};
+    const studentData = monthData[studentId] || {};
+    return {
+      ...prev,
+      [selectedMonthIdx]: {
+        ...monthData,
+        [studentId]: {
+          ...studentData,
+          [day]: next,
+        },
+      },
+    };
+  });
+  };
 
   // Calculate total presents for each student for selected month
   const getTotal = (studentId: string) => {
     let total = 0;
-    const monthData = attendance[selectedMonthIdx] || {};
+    const monthData = attendance && attendance[selectedMonthIdx];
     for (let d = 1; d <= numDays; d++) {
       if (monthData[studentId]?.[d] === 'P') total++;
     }
@@ -285,9 +177,10 @@ const AttendanceSection = () => {
 
   // Table row for right part (days + total)
   const renderRowRight = (student: Student, idx: number) => {
-    // console.log(student._id);
+    if (!attendance || !attendance[selectedMonthIdx]) return null;
+    
     const monthData = attendance[selectedMonthIdx] || {};
-    // console.log(selectedMonthIdx);
+
     return (
       <View key={student._id} style={{ flexDirection: 'row', height: rowHeight, backgroundColor: idx % 2 === 0 ? '#fff' : '#eff6ff' }}>
         {[...Array(numDays)].map((_, d) => {

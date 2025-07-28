@@ -23,7 +23,7 @@ export const postNotices = async (payload: Omit<Notice, "_id">) => {
 };
 
 // api/attendance
-export const postAttendanec = async (payload: markAttendance) => {
+export const postAttendance = async (payload: markAttendance) => {
   const res = await axios.post(`${baseURL}/attendance/mark`, payload);
   return res.data;
 };

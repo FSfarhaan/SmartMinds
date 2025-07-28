@@ -11,7 +11,7 @@ export type Student = {
     joiningDate: string;
     leavingDate?: string;
     feesTotal: number;
-    attendance: {
+    attendance?: {
       date: string;
       present: boolean;
     }[];

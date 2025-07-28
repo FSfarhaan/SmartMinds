@@ -11,6 +11,7 @@ export const useFetchData = <T>( fetchFn: () => Promise<T>, dependencies: any[] 
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
+  console.log("Kuch to change hua");
 
   useEffect(() => {
     let isMounted = true;
